@@ -17,7 +17,7 @@ func (mem *Memory) Load(offset uint64) []byte {
 	return mem.Access(offset, 32)
 }
 
-func (mem *Memory) Store(offset uint64, value []byte) (expansioncost uint64) {
+func (mem *Memory) Store(offset uint64, value []byte) (expansionCost uint64) {
 
 	currentSize := uint64(mem.Len())
 	currentCost := CalcMemoryGasCost(currentSize)
@@ -28,12 +28,24 @@ func (mem *Memory) Store(offset uint64, value []byte) (expansioncost uint64) {
 		copy(mem.data, value[:])
 		return CalcMemoryGasCost(32)
 	}
-}
 
-func Len(b []byte) {
-	panic("unimplemented")
+	if currentSize < newSize {
+		expansionSize := newSize - currentSize
+		if expansionSize > 0 {
+			mem.data = append(mem.data, make([]byte, expansionSize)...)
+		}
+		newCost := CalcMemoryGasCost(uint64(mem.Len()))
+		expansionCost = newCost - currentCost
+	}
+
+	copy(mem.data[offset:newSize], value)
+	return expansionCost
 }
 
 func (mem *Memory) Len() int {
 	return len(mem.data)
+}
+
+func NewMemory() *Memory {
+	return &Memory{data: make([]byte, 0)}
 }
