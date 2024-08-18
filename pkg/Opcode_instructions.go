@@ -14,28 +14,28 @@ func stop(evm *EVM) {
 }
 
 // Math
-func (evm *EVM) add() {
+func add(evm *EVM) {
 	a, b := evm.Stack.pop(), evm.Stack.pop()
 	evm.Stack.push(new(uint256.Int).Add(&a, &b))
 	evm.PC++
 	evm.deductGas(3)
 }
 
-func (evm *EVM) sub() {
+func sub(evm *EVM) {
 	a, b := evm.Stack.pop(), evm.Stack.pop()
 	evm.Stack.push(new(uint256.Int).Sub(&a, &b))
 	evm.PC++
 	evm.deductGas(3)
 }
 
-func (evm *EVM) mul() {
+func mul(evm *EVM) {
 	a, b := evm.Stack.pop(), evm.Stack.pop()
 	evm.Stack.push(new(uint256.Int).Mul(&a, &b))
 	evm.PC++
 	evm.deductGas(3)
 }
 
-func (evm *EVM) div() {
+func div(evm *EVM) {
 	a, b := evm.Stack.pop(), evm.Stack.pop()
 	if b.IsZero() {
 		evm.Stack.push(uint256.NewInt(0))
@@ -46,7 +46,7 @@ func (evm *EVM) div() {
 	evm.deductGas(3)
 }
 
-func (evm *EVM) sdiv() {
+func sdiv(evm *EVM) {
 	a, b := evm.Stack.pop(), evm.Stack.pop()
 	if b.IsZero() {
 		evm.Stack.push(uint256.NewInt(0))
@@ -892,7 +892,7 @@ func log4(evm *EVM) {
 }
 
 // This is used in jump_table.go
-func generatepushNFunc(size uint8) func(*EVM) {
+func generatePushFunc(size uint8) func(*EVM) {
 	return func(evm *EVM) {
 		pushN(evm, uint64(size))
 	}

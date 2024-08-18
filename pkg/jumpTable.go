@@ -31,7 +31,7 @@ func NewJumpTable() JumpTable {
 		SHL:            shl,
 		SHR:            shr,
 		SAR:            sar,
-		KECCAK256:      keccak256,
+		SHA3:           sha3,
 		ADDRESS:        address,
 		BALANCE:        balance,
 		ORIGIN:         origin,
