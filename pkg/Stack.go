@@ -1,6 +1,9 @@
 package goevm
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/holiman/uint256"
 )
 
@@ -32,6 +35,25 @@ func (st *Stack) peek() uint256.Int {
 		panic("Stack underflow")
 	}
 	return st.data[len(st.data)-1]
+}
+
+func (st Stack) ToString() string {
+	var d string
+	if len(st.data) == 0 {
+		d = "[]"
+		return d
+	}
+	for i := len(st.data) - 1; i >= 0; i-- {
+		if i == len(st.data)-1 {
+			d = "["
+		}
+		d += fmt.Sprintf("%v, ", st.data[i].Hex())
+		if i == 0 {
+			d = strings.TrimRight(d, ", ")
+			d += "]"
+		}
+	}
+	return d
 }
 
 func NewStack() *Stack {

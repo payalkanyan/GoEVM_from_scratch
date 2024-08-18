@@ -42,6 +42,32 @@ func (mem *Memory) Store(offset uint64, value []byte) (expansionCost uint64) {
 	return expansionCost
 }
 
+func (mem *Memory) Store32(offset uint64, value []byte) (expansionCost uint64) {
+	// Current memory size and cost
+	currentMemSize := uint64(mem.Len())
+	currentCost := CalcMemoryGasCost(currentMemSize)
+	newMemSize := offset + 32
+
+	// Handle initial allocation separately
+	if currentMemSize == 0 {
+		mem.data = make([]byte, 32)
+		copy(mem.data, value[:])
+		return CalcMemoryGasCost(32)
+	}
+
+	if currentMemSize < newMemSize {
+		expansionSize := newMemSize - currentMemSize
+		if expansionSize > 0 {
+			mem.data = append(mem.data, make([]byte, expansionSize)...)
+		}
+		newCost := CalcMemoryGasCost(uint64(mem.Len()))
+		expansionCost = newCost - currentCost
+	}
+
+	copy(mem.data[offset:offset+32], value)
+	return expansionCost
+}
+
 func (mem *Memory) Len() int {
 	return len(mem.data)
 }

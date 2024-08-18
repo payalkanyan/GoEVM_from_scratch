@@ -29,6 +29,10 @@ func (s *Storage) Store(key int, value common.Hash) (isWarm bool) {
 	return isWarm
 }
 
+func (s *Storage) Get(slot int) (value common.Hash, isWarm bool) {
+	return s.data[slot], s.cache[slot]
+}
+
 func NewStorage() *Storage {
 	return &Storage{
 		data:  make(map[int]common.Hash),
