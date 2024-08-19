@@ -4,12 +4,12 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/payalkanyan/GoEVM_from_scratch"
+	goevm "github.com/payalkanyan/goevm/pkg"
 )
 
 func main() {
-	block := GoEVM_from_scratch.NewBlock(common.HexToAddress("0x"), 2, 1, 0, 1, time.Now())
-	evm := GoEVM_from_scratch.NewEVM(common.HexToAddress("0x"), 500_000, 2e5, 1, 8000000, []byte{}, []byte{}, block)
+	block := goevm.NewBlock(common.HexToAddress("0x"), 2, 1, 0, 1, time.Now())
+	evm := goevm.NewEVM(common.HexToAddress("0x"), 500_000, 2e5, 1, 8000000, []byte{}, []byte{}, block)
 
 	// Switch the bytecodes around to use them.
 	ADDCODE := []byte{0x60, 0x42, 0x60, 0xFF, 0x01}

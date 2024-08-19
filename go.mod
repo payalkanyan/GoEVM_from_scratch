@@ -1,4 +1,4 @@
-module github.com/payalkanyan/GoEVM_from_scratch
+module github.com/payalkanyan/goevm
 
 go 1.22.5
 
